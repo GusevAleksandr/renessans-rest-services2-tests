@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+</head>
+<script>
+    function method1() {
+        // var documentGuid =
+        $.ajax("/method1/" + $("#method1Guid")[0].value).done(function (data) {
+            var blob = new Blob([base64ToArrayBuffer(data)], {type: "application/pdf"});
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            var fileName = "print.pdf";
+            link.download = fileName;
+            link.click();
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method2() {
+        // var documentGuid =
+        $.ajax("/method2/" + $("#method2Guid")[0].value).done(function (data) {
+            var blob = new Blob([base64ToArrayBuffer(data)], {type: "application/excel"});
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            var fileName = "export.xls";
+            link.download = fileName;
+            link.click();
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method4() {
+        var documentType = $("#method4DocType")[0].value;
+        var documentGuid = $("#method4Guid")[0].value;
+
+        var fileComp = $("#method4File")[0];
+        var fileName = fileComp.files[0].name;
+        var file = fileComp.files[0];
+        var fr = new FileReader(); // FileReader instance
+        fr.onload = function () {
+            $.ajax({
+                type: 'POST',
+                url: "/method4",
+                data: {
+                    "fileName": fileName, "documentType": documentType, "fileDescription": fileName,
+                    "documentGuid": documentGuid, "content": fr.result.split("base64,")[1]
+                },
+                success: function (data) {
+                    alert("Все прекрасно добавилось. Не забудьте проверить результат в БД! или где вы там проверяете сейчас" + data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR.responseText);
+                }
+            });
+        };
+        //fr.readAsText( file );
+        fr.readAsDataURL(file);
+    }
+
+    function method5() {
+        // var documentGuid =
+        $.ajax("/method5/" + $("#method5Guid")[0].value).done(function (data) {
+            var blob = new Blob([base64ToArrayBuffer(data)], {type: "application/pdf"});
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            var fileName = "report.pdf";
+            link.download = fileName;
+            link.click();
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method6() {
+        // var documentGuid =
+        $.ajax("/method6/" + $("#method6Guid")[0].value + "/" + $("#method6techMode")[0].checked).done(function (data) {
+            alert("Вернулся ответ: " + data)
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method7() {
+        // var documentGuid =
+        $.ajax("/method7/" + $("#method7Guid")[0].value + "/" + $("#method7SmsCode")[0].value).done(function (data) {
+            alert("Вернулся ответ: " + data)
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method8() {
+        // var documentGuid =
+        $.ajax("/method8/" + $("#method8Guid")[0].value).done(function (data) {
+            alert("Выполнился успешно" + data)
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method9_1() {
+        // var documentGuid =
+        $.ajax("/method9_1/" + $("#method9_1Guid")[0].value + "/" + $("#method9PartnerReason")[0].value).done(function (data) {
+            alert("Выполнился успешно" + data)
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method9_2() {
+        // var documentGuid =
+        $.ajax("/method9_2/" + $("#method9_1Guid")[0].value + "/" + $("#method9AgentReason")[0].value + "/" + $("#method9AgentReasonType")[0].value).done(function (data) {
+            alert("Выполнился успешно" + data)
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method10() {
+        // var documentGuid =
+        $.ajax("/method10/" + $("#method10Guid")[0].value).done(function (data) {
+            alert("Выполнился успешно" + data)
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method11() {
+        // var documentGuid =
+        $.ajax("/method11/" + $("#method11Guid")[0].value).done(function (data) {
+            var blob = new Blob([base64ToArrayBuffer(data)], {type: "application/pdf"});
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            var fileName = "report.pdf";
+            link.download = fileName;
+            link.click();
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function method12() {
+        var login = $("#method12Login")[0].value;
+        var password = $("#method12Password")[0].value;
+        if (login === '' || password === '') {
+            alert("Логин или пароль не введены. А надо");
+            return;
+        }
+
+        // var documentGuid =
+        $.ajax("/method12/" + $("#method12Guid")[0].value + "/" + login + "/" + password).done(function (data) {
+            alert("Выполнился успешно" + data)
+        }).fail(function (data) {
+            alert(data.responseText);
+        });
+    }
+
+    function base64ToArrayBuffer(base64) {
+        var binaryString = window.atob(base64);
+        var binaryLen = binaryString.length;
+        var bytes = new Uint8Array(binaryLen);
+        for (var i = 0; i < binaryLen; i++) {
+            var ascii = binaryString.charCodeAt(i);
+            bytes[i] = ascii;
+        }
+        return bytes;
+    }
+</script>
+
+<body>
+
+<!-- -->
+<h3>Метод для получения pdf–файла заданного документа (акта вознаграждения, договора)</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method1Guid"/>
+</div>
+<button onclick="method1()">Попробовать</button>
+
+<br/>
+
+<!-- -->
+<h3>Метод для получения Отчета по выданным кредитам (xls) из заданного  акта вознаграждения</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method2Guid"/>
+</div>
+<button onclick="method2()">Попробовать</button>
+
+
+<!-- -->
+<h1>Подписание договора/акта партнером с помощью новой ПЭП</h1>
+<h3>Сервис «Загрузить файл с документами»</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method4Guid"/>
+</div>
+<div>
+    <label>Тип документа</label>
+    <input type="text" id="method4DocType"/>
+</div>
+<div>
+    <label>Выберите файл</label>
+    <input type="file" id="method4File"/>
+</div>
+<button onclick="method4()">Попробовать</button>
+
+<!-- -->
+<h3>Сервис «Начать подписание/согласование»</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method5Guid"/>
+</div>
+<button onclick="method5()">Попробовать</button>
+
+<!-- -->
+<h3>Сервис «Подписать/согласовать договор/ДС/акт»</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method6Guid"/>
+</div>
+<div>
+    <input type="checkbox" id="method6techMode">Технический режим (при выборе режима, будет возвращаться код смс сюда -
+    на страницу)</input>
+</div>
+<button onclick="method6()">Попробовать</button>
+
+<!-- -->
+<h3>Сервис «Подтвердить подпись договора/ДС/акта»</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method7Guid"/>
+</div>
+<div>
+    <label>Ведите смс-код</label>
+    <input type="text" id="method7SmsCode"/>
+</div>
+<button onclick="method7()">Попробовать</button>
+
+<!-- -->
+<h3>Сервис «Отменить подписание договора/ДС/акта»</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method8Guid"/>
+</div>
+<button onclick="method8()">Попробовать</button>
+
+<!-- -->
+<h3>Сервис «Отклонение договора/ДС/акта»</h3>
+<p>Для сценариев 'Сценарий «Партнер. Несогласование акта»', 'Сценарий «Партнер. Отзыв подписи акта»', 'Сценарий
+    «Партнер. Отклонить договор/ДС»':</p>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method9_1Guid"/>
+</div>
+<div>
+    <label>Ведите причину</label>
+    <textarea id="method9PartnerReason"></textarea>
+</div>
+<button onclick="method9_1()">Попробовать</button>
+<hr/>
+<p>Для сценариев 'Сценарий «Агент. Несогласование акта»', 'Сценарий «Агент. Отзыв подписи акта»':</p>
+<div>
+    <label>Введите гуид</label>
+    <input type="text" id="method9_2Guid"/>
+</div>
+<div>
+    <div>
+        <label>Введите текст причины</label>
+        <textarea id="method9AgentReason"></textarea>
+    </div>
+    <div>
+        <label>Выберите тип причины</label>
+        <select id="method9AgentReasonType">
+            <option>Некомплект</option>
+            <option>Документы не читаемы</option>
+            <option>Документы заполнены не полностью</option>
+            <option>Отсутствуют необходимые подписи или отметки</option>
+            <option>Отсутствуют необходимые согласования</option>
+            <option>Некорректно заполнена карточка партнера</option>
+            <option>Полномочия отозваны</option>
+            <option>подписант блокирован</option>
+            <option>тестируем типы ошибок</option>
+        </select>
+    </div>
+</div>
+<button onclick="method9_2()">Попробовать</button>
+
+
+<!-- -->
+<h3>Сервис «Выполнение операции ЖЦ»</h3>
+<p>Для сценария 'Сценарий «Партнер. Исправление счетов в акте»':</p>
+<div>
+    <label>Введите гуид</label>
+    <input type="text" id="method10Guid"/>
+</div>
+<button onclick="method10()">Попробовать</button>
+
+
+<!-- -->
+<h1>Подписание акта агентом путем ввода текущего пароля от Sixtinum.</h1>
+<h3>Сервис «Начать согласование акта агента»</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method11Guid"/>
+</div>
+<button onclick="method11()">Попробовать</button>
+
+<!-- -->
+<h3>Сервис «Закончить согласование акта агента» + Сервис «Аутентификация агента для подписи акта»</h3>
+<div>
+    <label>Ведите гуид</label>
+    <input type="text" id="method12Guid"/>
+</div>
+<div>
+    <label>Введите логин для подписи</label>
+    <input type="text" id="method12Login"/>
+</div>
+<div>
+    <label>Введите логин для подписи</label>
+    <input type="text" id="method12Password"/>
+</div>
+<button onclick="method12()">Попробовать</button>
+
+</body>
+</html>
